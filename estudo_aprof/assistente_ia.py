@@ -98,4 +98,52 @@ if groq_api_key:
 #Caso não tenha chave, mas já existam mensagens, mostra aviso
 elif st.session_state.messages:
     st.warning("Por favor, insira sua API Key da Groq na barra lateral para continuar.")
-    
+
+#Captura a entrada do usuário no chat
+if prompt := st.chat_input("Qual sua dúvida sobre Python?"):
+
+    #Se não ouver cliente válido, mostra aviso e para a execução 
+    if not client: 
+        st.warning("Por favor, insira sua API Key da Groq na barra lateral para começar.")
+        st.stop()
+
+        # Armazena a mesnagem do usuário no estado da sessão
+    st.session_state.messages.appende({"role":"user", "content": prompt})
+
+        #Exibe a mensagem do usuário no chat
+    with st.chat_message("user"):
+            st.markdown(prompt)
+
+    #Prepara a mensagens para enviar á API, ibcluindo prompt de sistema
+    messages_for_api = [{"role": "system", "content": CUSTOM_PROMPT}]
+    for msg in st.session_state.messages:
+
+        messages_for_api.append(msg)
+
+    #Cria a resposta do assistente no chat
+    with st.chat_message("assistant"):
+
+        with st.spinner("Analisando sua pergunta... "):
+
+            try:
+
+                ## Chama a API da Groq para gerar a resposta do assistente
+                chat_completion = client.chat.completions.create(
+                    messages = messages_for_api,
+                    model = "openai/gpt-oss-20b", 
+                    temperature = 0.7,
+                    max_tokens = 2048,
+                )
+
+                # Extrai a resposta gerada pela API
+                dsa_ia_resposta = chat_completion.choices[0].message.content
+
+                # Exibe a resposta do Streamlit
+                st.markdown(dsa_ia_resposta)
+
+                #Armazena respostas do assistente no estado da sessão
+                st.session_state.messages.append({"role": "assistant", "content": dsa_ia_resposta})
+            #Caso ocorra erro na comunicação  com a API, exibe mensagem de erro
+            except Exception as e:
+                st.error(f"Ocorre um erro ao se comunicar com API da Groq: {e}")
+                
