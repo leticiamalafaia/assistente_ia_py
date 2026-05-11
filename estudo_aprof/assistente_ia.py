@@ -143,7 +143,19 @@ if prompt := st.chat_input("Qual sua dúvida sobre Python?"):
 
                 #Armazena respostas do assistente no estado da sessão
                 st.session_state.messages.append({"role": "assistant", "content": dsa_ia_resposta})
+
             #Caso ocorra erro na comunicação  com a API, exibe mensagem de erro
             except Exception as e:
                 st.error(f"Ocorre um erro ao se comunicar com API da Groq: {e}")
-                
+
+st.markdown(
+    """
+    <div style="text-align: center; color: gray;">
+        <hr>
+        <p>DSA AI Coder - Parte Integrante do Curso Gratuito Fundamentos de Linguagem Python da Data Science Academy</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Obrigado DSA
