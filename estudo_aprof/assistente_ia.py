@@ -44,7 +44,7 @@ with st.sidebar:
     # Mostra um texto explicativo sobre o assistente 
     st.markdown("Um assistente de IA focado em programação Python para ajudar iniciantes.")
 
-    Groq_api_key = st.text_input(
+    groq_api_key = st.text_input(
         "Insira sua API Key Groq",
         type="password",
         help="Obitenha sua chave em https://console.groq.com/keys"
@@ -77,3 +77,25 @@ if "messages" not in st.session_state:
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+
+#Inicializa a variavel do cliente Groq como None
+client = None
+
+# Verifica se o usuário a chave da API do Groq
+
+if groq_api_key:
+
+    try:
+
+        #Cria cliente Groq com a chave de API fornecidas
+        client = Groq(api_key = groq_api_key)
+    except Exception as e:
+
+        #Exibe erro caso haja problema ao inicializr o cliente
+        st.sidebar.error(f"Erro ao incializar o cliente Groq: {e}")
+        st.stop()
+
+#Caso não tenha chave, mas já existam mensagens, mostra aviso
+elif st.session_state.messages:
+    st.warning("Por favor, insira sua API Key da Groq na barra lateral para continuar.")
+    
