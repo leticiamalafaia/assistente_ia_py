@@ -33,3 +33,47 @@ REGRAS DE OPERAÇÃO:
     * **Documentação de Referência**: Ao final, inclua uma seção chamada "📚 Documentação de Referência" com um link direto e relevante para a documentação oficial da Linguagem Python (docs.python.org) ou da biblioteca em questão.
 3.  **Clareza e Precisão**: Use uma linguagem clara. Evite jargões desnecessários. Suas respostas devem ser tecnicamente precisas.
 """
+
+# Cria o conteúdo da barra lateral no Streamlit
+
+with st.sidebar:
+
+    #Define o titulo da barra lateral
+    st.markdown("Um assistente de IA focada em programação Python para ajudar iniciantes.")
+
+    # Mostra um texto explicativo sobre o assistente 
+    st.markdown("Um assistente de IA focado em programação Python para ajudar iniciantes.")
+
+    Groq_api_key = st.text_input(
+        "Insira sua API Key Groq",
+        type="password",
+        help="Obitenha sua chave em https://console.groq.com/keys"
+    )
+
+    # Adiciona linhas divisórias e explicações extras na barra lateral
+    st.markdown("---")
+    st.markdown("Desenvolvido para auxiliar em suas dúvidas de programação com Linguagem Python. IA pode cometer erros. Sempre verifique as respostas.")
+
+    st.markdown("---")
+    st.markdown("Conheça os Cursos Individuais, Formações e Programas de Pós-Graduação da DSA:")
+
+    #Link para o site da DSA 
+    st.markdown("🔗 [Data Science Academy](https://www.datascienceacademy.com.br)")
+
+#Título princial do app
+st.title("Data Science Academy - DSA IA Coder")
+
+#Subtítulo adicional
+st.title("Assistente Pessoal de Programação Pyton 🐍")
+
+#texto auxiliar abaixo do título
+st.caption("Faça sua pergunta sobre a Linguagem Python e obtenha código, explicações e referências.")
+
+#Inicializa o historico de mensagens na sessão, caso ainda não exista
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Exibe todas as mensagens anteriores armazenadas no estado da sessão
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
